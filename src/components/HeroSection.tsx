@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, ArrowDown, FileText, Phone } from "lucide-react";
 import ParticleField from "./ParticleField";
+import TerminalIntro from "./TerminalIntro";
 
 const HeroSection = () => {
   return (
@@ -18,14 +19,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <motion.p
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="mono text-sm text-muted-foreground mb-6 tracking-wider"
-          >
-            &lt;hello world /&gt;
-          </motion.p>
+          <TerminalIntro />
 
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-4 leading-tight heading-font">
             <span className="gradient-text">Avishkar</span>{" "}

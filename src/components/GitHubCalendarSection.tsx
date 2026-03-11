@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import GitHubCalendar from "react-github-calendar";
+import { GitHubCalendar } from "react-github-calendar";
 import SectionWrapper from "./SectionWrapper";
 import { useEffect, useState } from "react";
 import { Github, Star, Users, BookOpen, Code } from "lucide-react";
