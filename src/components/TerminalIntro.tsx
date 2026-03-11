@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 
 const commands = [
   { cmd: "whoami", output: "Avishkar More" },
-  { cmd: "role", output: "Cybersecurity Engineering Student" },
-  { cmd: "focus", output: "AI | Systems | Cybersecurity | IoT | Computer Vision" },
-  { cmd: "location", output: "Bangalore, India" },
-  { cmd: "status", output: "Open to internships" },
+  { cmd: "cat role.txt", output: "Cybersecurity Engineering Student" },
+  { cmd: "ls skills/", output: "AI  CV  IoT  Cybersecurity  FullStack" },
+  { cmd: "echo $CGPA", output: "9.75 @ RV College of Engineering" },
+  { cmd: "./status.sh", output: "⚡ Open to internships & research roles" },
 ];
 
 const TerminalIntro = () => {
@@ -26,16 +26,16 @@ const TerminalIntro = () => {
           setLines((prev) => {
             const updated = [...prev];
             const idx = currentCmd * 2;
-            updated[idx] = { text: `> ${cmd.slice(0, currentChar)}`, isCommand: true, done: false };
+            updated[idx] = { text: `❯ ${cmd.slice(0, currentChar)}`, isCommand: true, done: false };
             return updated;
           });
           setCurrentChar((c) => c + 1);
-        }, 50 + Math.random() * 40);
+        }, 32 + Math.random() * 20);
         return () => clearTimeout(timeout);
       } else {
         setLines((prev) => {
           const updated = [...prev];
-          updated[currentCmd * 2] = { text: `> ${cmd}`, isCommand: true, done: true };
+          updated[currentCmd * 2] = { text: `❯ ${cmd}`, isCommand: true, done: true };
           return updated;
         });
         setPhase("output");
@@ -51,7 +51,7 @@ const TerminalIntro = () => {
         setCurrentCmd((c) => c + 1);
         setPhase("cmd");
         setCurrentChar(0);
-      }, 300);
+      }, 180);
       return () => clearTimeout(timeout);
     }
   }, [currentCmd, currentChar, phase]);
@@ -59,39 +59,52 @@ const TerminalIntro = () => {
   const isTyping = currentCmd < commands.length;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.2 }}
-      className="w-full max-w-xl mx-auto mb-8"
-    >
-      <div className="rounded-xl overflow-hidden border border-border/60" style={{ background: "hsl(222 47% 6% / 0.9)" }}>
-        {/* Title bar */}
-        <div className="flex items-center gap-2 px-4 py-2.5 border-b border-border/40" style={{ background: "hsl(222 47% 8% / 0.8)" }}>
-          <span className="w-3 h-3 rounded-full" style={{ background: "hsl(0 84% 60%)" }} />
-          <span className="w-3 h-3 rounded-full" style={{ background: "hsl(45 93% 47%)" }} />
-          <span className="w-3 h-3 rounded-full" style={{ background: "hsl(142 71% 45%)" }} />
-          <span className="ml-3 text-xs text-muted-foreground mono">avishkar@portfolio ~ %</span>
+    <div className="w-full max-w-lg mx-auto">
+      <div className="terminal-window rounded-xl overflow-hidden border border-white/5 shadow-2xl">
+        {/* macOS-style title bar */}
+        <div className="terminal-titlebar flex items-center gap-2 px-4 py-3 border-b border-white/5">
+          <div className="flex items-center gap-1.5">
+            <span className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors cursor-default" />
+            <span className="w-3 h-3 rounded-full bg-yellow-400/80 hover:bg-yellow-400 transition-colors cursor-default" />
+            <span className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors cursor-default" />
+          </div>
+          <span className="ml-auto mr-auto text-xs text-white/30 mono">avishkar@portfolio — zsh</span>
         </div>
 
         {/* Terminal body */}
-        <div className="p-4 mono text-sm space-y-1 min-h-[180px]">
+        <div className="terminal-body p-5 mono text-sm space-y-2 min-h-[220px] max-h-[280px] overflow-y-auto">
           {lines.map((line, i) =>
             line ? (
-              <div
+              <motion.div
                 key={i}
-                className={line.isCommand ? "text-accent" : "text-foreground/80"}
+                initial={{ opacity: 0, x: -4 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.2 }}
+                className={line.isCommand
+                  ? "text-cyan-400 font-medium"
+                  : "text-white/60 pl-4 border-l border-white/10"
+                }
               >
                 {line.text}
-              </div>
+              </motion.div>
             ) : null
           )}
           {isTyping && (
-            <span className="inline-block w-2 h-4 bg-accent animate-pulse" />
+            <span className="inline-block w-1.5 h-4 bg-cyan-400/80 animate-pulse rounded-sm ml-0.5" />
+          )}
+          {!isTyping && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="text-cyan-400/50 text-xs"
+            >
+              ❯ <span className="animate-pulse">_</span>
+            </motion.div>
           )}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

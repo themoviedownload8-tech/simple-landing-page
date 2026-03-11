@@ -3,12 +3,12 @@ import SectionWrapper from "./SectionWrapper";
 import { Code, Server, Brain, Shield, Cloud, Wrench } from "lucide-react";
 
 const categories = [
-  { name: "Programming", icon: Code, items: ["Python", "C++", "Java", "TypeScript", "JavaScript"], angle: 0 },
-  { name: "Frameworks", icon: Server, items: ["React", "Flask", "Express", "Django", "Node.js"], angle: 60 },
-  { name: "AI/ML", icon: Brain, items: ["ML", "CV", "NLP", "Scikit-Learn", "TensorFlow"], angle: 120 },
-  { name: "Cybersecurity", icon: Shield, items: ["Network Sec", "IDS", "Nmap", "Wireshark", "Crypto"], angle: 180 },
-  { name: "Cloud", icon: Cloud, items: ["AWS", "Docker", "PostgreSQL", "Supabase", "Git"], angle: 240 },
-  { name: "Tools", icon: Wrench, items: ["VS Code", "Linux", "Postman", "Figma", "Arduino"], angle: 300 },
+  { name: "Languages", icon: Code,   items: ["Python", "TypeScript", "JavaScript", "C / C++", "Java"], angle: 0 },
+  { name: "Frameworks", icon: Server, items: ["React", "Flask", "FastAPI", "Node.js", "Express"], angle: 60 },
+  { name: "AI / ML",   icon: Brain,  items: ["Scikit-Learn", "DeepFace", "OpenCV", "SHAP", "AWS Bedrock"], angle: 120 },
+  { name: "Security",  icon: Shield, items: ["JWT / Bcrypt", "IDS / IPS", "Scapy", "AES-256", "RBAC / RLS"], angle: 180 },
+  { name: "Cloud",     icon: Cloud,  items: ["AWS Lambda", "Supabase", "PostgreSQL", "Docker", "Vercel / Render"], angle: 240 },
+  { name: "Tools",     icon: Wrench, items: ["Git / GitHub", "Linux", "Arduino", "Postman", "Gunicorn"], angle: 300 },
 ];
 
 const TechStackVisualization = () => {

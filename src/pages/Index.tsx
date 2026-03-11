@@ -4,12 +4,12 @@ import AboutSection from "@/components/AboutSection";
 import EducationSection from "@/components/EducationSection";
 import ExperienceSection from "@/components/ExperienceSection";
 import ProjectsSection from "@/components/ProjectsSection";
-import CertificationsSection from "@/components/CertificationsSection";
-import AchievementsSection from "@/components/AchievementsSection";
 import TechStackVisualization from "@/components/TechStackVisualization";
 import SkillBars from "@/components/SkillBars";
+import CertificationsSection from "@/components/CertificationsSection";
+import AchievementsSection from "@/components/AchievementsSection";
 import GitHubCalendarSection from "@/components/GitHubCalendarSection";
-import ContactForm from "@/components/ContactForm";
+import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -26,7 +26,7 @@ const Index = () => {
       <CertificationsSection />
       <AchievementsSection />
       <GitHubCalendarSection />
-      <ContactForm />
+      <ContactSection />
       <Footer />
     </div>
   );
