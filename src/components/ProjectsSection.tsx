@@ -1,6 +1,6 @@
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import SectionWrapper from "./SectionWrapper";
-import { Github, ExternalLink, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 interface Project {
   title: string;
@@ -84,52 +84,81 @@ const additional: Project[] = [
   },
 ];
 
-const ProjectCard = ({ project, index }: { project: Project; index: number }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ delay: index * 0.1, duration: 0.5 }}
-    whileHover={{
-      y: -6,
-      rotateX: 2,
-      rotateY: -2,
-      transition: { duration: 0.3 },
-    }}
-    className="glass-card p-6 group flex flex-col relative overflow-hidden"
-    style={{ perspective: "1000px" }}
-  >
-    {/* Subtle gradient overlay on hover */}
-    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-br from-neon-blue/5 via-transparent to-neon-violet/5" />
+const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
 
-    <div className="flex items-start justify-between mb-2 relative z-10">
-      <div>
-        <h3 className="text-lg font-bold text-foreground group-hover:text-accent transition-colors heading-font">
-          {project.title}
-        </h3>
-        <p className="text-xs text-muted-foreground">{project.subtitle}</p>
+  const rotateX = useSpring(useTransform(y, [-100, 100], [8, -8]), { stiffness: 300, damping: 30 });
+  const rotateY = useSpring(useTransform(x, [-100, 100], [-8, 8]), { stiffness: 300, damping: 30 });
+
+  const handleMouse = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    x.set(e.clientX - rect.left - rect.width / 2);
+    y.set(e.clientY - rect.top - rect.height / 2);
+  };
+
+  const handleLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1, duration: 0.5 }}
+      onMouseMove={handleMouse}
+      onMouseLeave={handleLeave}
+      style={{ rotateX, rotateY, perspective: 1000 }}
+      className="glass-card p-6 group flex flex-col relative overflow-hidden cursor-default"
+    >
+      {/* Animated gradient border glow */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-[inherit]"
+        style={{
+          background: "linear-gradient(135deg, hsl(var(--neon-blue) / 0.08), transparent 50%, hsl(var(--neon-violet) / 0.08))",
+        }}
+      />
+      <div className="absolute inset-[-1px] rounded-[inherit] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        style={{
+          background: "linear-gradient(135deg, hsl(var(--neon-blue) / 0.4), transparent, hsl(var(--neon-violet) / 0.3))",
+          mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+          WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+          maskComposite: "exclude",
+          WebkitMaskComposite: "xor",
+          padding: "1px",
+        }}
+      />
+
+      <div className="flex items-start justify-between mb-2 relative z-10">
+        <div>
+          <h3 className="text-lg font-bold text-foreground group-hover:text-accent transition-colors heading-font">
+            {project.title}
+          </h3>
+          <p className="text-xs text-muted-foreground">{project.subtitle}</p>
+        </div>
+        <a
+          href={project.github}
+          target="_blank"
+          rel="noreferrer"
+          className="text-muted-foreground hover:text-accent transition-colors p-1"
+        >
+          <ArrowUpRight className="w-5 h-5" />
+        </a>
       </div>
-      <a
-        href={project.github}
-        target="_blank"
-        rel="noreferrer"
-        className="text-muted-foreground hover:text-accent transition-colors p-1"
-      >
-        <ArrowUpRight className="w-5 h-5" />
-      </a>
-    </div>
 
-    <p className="text-sm text-secondary-foreground mb-4 flex-1 leading-relaxed relative z-10">
-      {project.description}
-    </p>
+      <p className="text-sm text-secondary-foreground mb-4 flex-1 leading-relaxed relative z-10">
+        {project.description}
+      </p>
 
-    <div className="flex flex-wrap gap-2 relative z-10">
-      {project.tech.map((t) => (
-        <span key={t} className="tech-badge">{t}</span>
-      ))}
-    </div>
-  </motion.div>
-);
+      <div className="flex flex-wrap gap-2 relative z-10">
+        {project.tech.map((t) => (
+          <span key={t} className="tech-badge">{t}</span>
+        ))}
+      </div>
+    </motion.div>
+  );
+};
 
 const ProjectsSection = () => (
   <SectionWrapper id="projects">

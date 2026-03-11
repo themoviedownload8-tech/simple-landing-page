@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
+  { label: "Home", href: "#" },
   { label: "About", href: "#about" },
-  { label: "Education", href: "#education" },
-  { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
   { label: "Skills", href: "#skills" },
+  { label: "Experience", href: "#experience" },
+  { label: "Certifications", href: "#certifications" },
   { label: "GitHub", href: "#github" },
   { label: "Contact", href: "#contact" },
 ];
@@ -27,8 +28,11 @@ const Navbar = () => {
       animate={{ y: 0 }}
       transition={{ duration: 0.6 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "glass-card border-b border-border/50 !rounded-none" : ""
+        scrolled
+          ? "backdrop-blur-xl border-b border-border/50 bg-background/70"
+          : "bg-transparent"
       }`}
+      style={{ borderRadius: 0 }}
     >
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <a href="#" className="text-lg font-bold gradient-text mono">AM</a>
@@ -36,7 +40,7 @@ const Navbar = () => {
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-6">
           {navItems.map((item) => (
-            <a key={item.href} href={item.href} className="nav-link">
+            <a key={item.href + item.label} href={item.href} className="nav-link">
               {item.label}
             </a>
           ))}
@@ -67,11 +71,11 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden glass-card border-t border-border/50 px-6 py-4 space-y-4 !rounded-none"
+            className="md:hidden backdrop-blur-xl bg-background/80 border-t border-border/50 px-6 py-4 space-y-4"
           >
             {navItems.map((item) => (
               <a
-                key={item.href}
+                key={item.href + item.label}
                 href={item.href}
                 className="block nav-link py-2"
                 onClick={() => setMobileOpen(false)}
