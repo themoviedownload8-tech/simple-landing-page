@@ -4,14 +4,24 @@ import { Trophy, Star, Award } from "lucide-react";
 
 const achievements = [
   {
-    icon: Star,
-    title: "JEE Advanced AIR 15,207",
-    description: "Ranked in top 1% nationwide across major engineering entrance exams",
+    icon: Award,
+    title: "CGPA 9.75 — RV College of Engineering",
+    description: "Maintaining exceptional academic standing in CSE (Cybersecurity) — top of batch.",
   },
   {
-    icon: Award,
-    title: "Current CGPA 9.75",
-    description: "Maintaining exceptional academic performance at RVCE",
+    icon: Star,
+    title: "JEE Advanced AIR 15,207",
+    description: "Ranked in top 1% nationwide out of 1.8M+ JEE Main & Advanced candidates.",
+  },
+  {
+    icon: Trophy,
+    title: "99.002 Percentile — MHT-CET 2024",
+    description: "Near-perfect score in Maharashtra state engineering entrance examination.",
+  },
+  {
+    icon: Star,
+    title: "AIR 779 — COMEDK UGET",
+    description: "Top rank in national engineering entrance, reflecting consistent academic excellence.",
   },
 ];
 
@@ -21,7 +31,7 @@ const AchievementsSection = () => (
       <span className="gradient-text">Achievements</span>
     </h2>
 
-    <div className="grid md:grid-cols-2 gap-6">
+    <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-6">
       {achievements.map((a, i) => (
         <motion.div
           key={i}

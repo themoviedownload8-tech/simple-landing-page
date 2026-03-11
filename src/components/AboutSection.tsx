@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import SectionWrapper from "./SectionWrapper";
-import { Shield, Brain, Eye, Cloud, Cpu, Network, Code, Briefcase } from "lucide-react";
+import { Shield, Brain, Eye, Cloud, Cpu, Code } from "lucide-react";
 
 const interests = [
   { icon: Shield, label: "Cybersecurity Systems" },

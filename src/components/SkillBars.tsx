@@ -2,14 +2,14 @@ import { motion } from "framer-motion";
 import SectionWrapper from "./SectionWrapper";
 
 const skills = [
-  { name: "Python", level: 90, color: "var(--neon-blue)" },
-  { name: "React / TypeScript", level: 85, color: "var(--neon-cyan)" },
-  { name: "Machine Learning", level: 80, color: "var(--neon-violet)" },
-  { name: "Cybersecurity", level: 75, color: "var(--neon-blue)" },
-  { name: "IoT / Embedded", level: 70, color: "var(--neon-cyan)" },
-  { name: "Cloud / DevOps", level: 65, color: "var(--neon-violet)" },
-  { name: "Computer Vision", level: 75, color: "var(--neon-blue)" },
-  { name: "Full Stack Dev", level: 80, color: "var(--neon-cyan)" },
+  { name: "Python",                 level: 90, color: "var(--neon-blue)" },
+  { name: "React / TypeScript",     level: 88, color: "var(--neon-cyan)" },
+  { name: "Machine Learning",       level: 82, color: "var(--neon-violet)" },
+  { name: "Cybersecurity / IDS",    level: 80, color: "var(--neon-blue)" },
+  { name: "Flask / FastAPI",        level: 82, color: "var(--neon-cyan)" },
+  { name: "Computer Vision",        level: 78, color: "var(--neon-violet)" },
+  { name: "Cloud (AWS / Supabase)", level: 72, color: "var(--neon-blue)" },
+  { name: "IoT / Embedded (C++)",   level: 68, color: "var(--neon-cyan)" },
 ];
 
 const SkillBars = () => (
