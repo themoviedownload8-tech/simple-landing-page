@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import { Upload, FileText, Search, AlertTriangle, CheckCircle, Loader2 } from 'lucide-react'
 import { useClassify, useExtractText, useAnalyze } from '@/hooks/useApi'
 import type { ClassifyResult } from '@/types'
