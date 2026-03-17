@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+python-multipart
+pydantic
+
+pandas
+numpy
+networkx
+scikit-learn
+joblib
+nltk
+
+torch
+torchvision
+easyocr
