@@ -12,7 +12,7 @@ const stack = [
 ];
 
 function RevealCard({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
-  const [ref, visible] = useScrollReveal<HTMLDivElement>();
+  const [ref, visible] = useScrollReveal();
   return (
     <div ref={ref}>
       <motion.div

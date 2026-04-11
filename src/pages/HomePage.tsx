@@ -28,7 +28,7 @@ const itemVariants = {
 };
 
 function ScrollRevealSection({ children, className = '' }: { children: React.ReactNode; className?: string }) {
-  const [ref, visible] = useScrollReveal<HTMLDivElement>();
+  const [ref, visible] = useScrollReveal();
   return (
     <div ref={ref} className={className}>
       <motion.div
