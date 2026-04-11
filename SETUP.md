@@ -1,111 +1,166 @@
-# AegisShield Model Setup
+# Team Setup Guide
 
-This guide explains how to set up and run the AI model pipeline end-to-end.
+This guide helps teammates run the Medical RAG assistant locally.
+
+Project repository: https://github.com/Avi007-debug/Team_Agent_Wars_Healthcare-Monitoring-AI-Agent
+
+Updated RAG assets (latest datasets + vector files):
+https://drive.google.com/file/d/1Dz0GfoIwkxKhK2sKMLt44T-mq1O8JYYL/view?usp=sharing
+
+Backup RAG assets (older zip with proper datasets and final vector files):
+https://drive.google.com/file/d/1m-fUhmBdns8lD3BhdRqYpaclD7OXiSx/view?usp=sharing
 
 ## 1. Prerequisites
 
-- Python 3.10+
+- Python 3.10 or 3.11
 - pip
-- Optional: virtual environment tool (`venv`)
+- Git
 
-## 2. Project Structure (AI-relevant)
+## 2. Clone Repository
 
-- `data/datasets/`: raw dataset files
-- `data/processed/`: generated processed files
-- `backend/models/`: trained model artifacts (`.pkl`)
-- `backend/scripts/`: preprocessing, training, and prediction scripts
-- `backend/ocr/`: OCR module
+```powershell
+git clone https://github.com/Avi007-debug/Team_Agent_Wars_Healthcare-Monitoring-AI-Agent.git
+cd Team_Agent_Wars_Healthcare-Monitoring-AI-Agent
+```
 
 ## 3. Create and Activate Virtual Environment
 
-From repository root:
+### Windows PowerShell
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
+### macOS/Linux
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
 ## 4. Install Dependencies
 
-It is recommended to install all Python dependencies from the repository `requirements.txt` so the environment matches the project.
-
-From repository root (inside the activated virtual environment):
-
 ```powershell
+cd RAG
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Notes:
-- `requirements.txt` includes `torch` and `torchvision` which EasyOCR requires; if you need a specific CUDA build, install the matching `torch`/`torchvision` from the official PyTorch instructions before installing the rest of the requirements.
-- On Windows you may need to run PowerShell as Administrator when installing some binary packages.
+## 5. Confirm Required RAG Files
 
-## 5. Download/Place Datasets
+The following files are intentionally gitignored and should stay unchanged in local setups:
 
-Put the following files into `data/datasets/`:
+- `RAG/medical_rag_dataset.json`
+- `RAG/medical_vector_db.faiss`
+- `RAG/Datasets/`
 
-- `Fake.csv`
-- `True.csv`
-- `train.tsv`
-- `valid.tsv`
-- `test.tsv`
+If these are missing on a fresh clone:
 
-Sources and credits: see `data/README.md`.
+1. Download and extract the latest zip from the updated Drive link above (use older link only if needed).
+2. Copy the `Datasets/` folder to `RAG/Datasets/`.
+3. Copy `medical_rag_dataset.json` to `RAG/medical_rag_dataset.json`.
+4. Copy `medical_vector_db.faiss` to `RAG/medical_vector_db.faiss`.
+5. Keep these files uncommitted (they are intentionally ignored).
 
-## 6. Run Data Processing Pipeline
+Exact expected locations:
 
-From repository root, run:
+- `Team_Agent_Wars_Healthcare-Monitoring-AI-Agent/RAG/medical_rag_dataset.json`
+- `Team_Agent_Wars_Healthcare-Monitoring-AI-Agent/RAG/medical_vector_db.faiss`
+- `Team_Agent_Wars_Healthcare-Monitoring-AI-Agent/RAG/Datasets/`
 
-```powershell
-python backend/scripts/process_news_dataset.py
-python backend/scripts/process_liar_dataset.py
-python backend/scripts/combine_datasets.py
-```
+Do not place these files in root folder or inside `RAG/Scripts/`.
 
-This generates:
-
-- `data/processed/news_processed.csv`
-- `data/processed/liar_processed.csv`
-- `data/processed/combined_dataset.csv`
-
-## 7. Train the Model
+## 6. Run Manual Test Suite
 
 ```powershell
-python backend/scripts/train_model.py
+python test_agent.py
 ```
 
-This generates model artifacts in `backend/models/`:
+This runs:
+- custom query checks from `RAG/tests/test_queries_custom.txt` when present
+- otherwise defaults to `RAG/tests/test_queries.txt`
+- edge-case checks (`asdasdasd`, `unknown disease xyz`)
+- interactive mode after automated checks
 
-- `misinformation_model.pkl`
-- `tfidf_vectorizer.pkl`
+Manual validation checklist:
 
-## 8. Run Prediction Test
+- disease query should return relevant symptoms/treatment
+- drug side-effect query should return relevant drug section
+- nutrition query should return relevant food/nutrition context
+- interaction query should use the interaction tool output
+- nonsense query should return safety fallback message
+
+## 7. Run FastAPI Backend (Week-6)
+
+From inside `RAG/`:
 
 ```powershell
-python backend/scripts/predict.py
+uvicorn backend.api:app --reload
 ```
 
-## 9. OCR + Detection Test (Optional)
+Open Swagger UI:
 
-Use sample image in `data/samples/sample_image.png`:
+- http://127.0.0.1:8000/docs
+
+Available endpoints:
+
+- `POST /ask` for assistant responses
+- `POST /predict` for health risk prediction
+- `POST /interaction` for drug interactions
+- `GET /health` for service status
+
+## 8. Run API Test Script
+
+Start backend first, then in a second terminal (still inside `RAG/`):
 
 ```powershell
-python backend/scripts/detect_from_image.py
+python tests/test_api.py
 ```
 
-## 10. Run Backend API (Optional)
-
-Install API dependencies if needed:
+## 9. Launch Gradio UI
 
 ```powershell
-pip install fastapi uvicorn python-multipart
+python interface/app.py
 ```
 
-Start API:
+Open the local URL shown in terminal.
 
-```powershell
-uvicorn backend.main:app --reload
+## 10. Capture Demo Screenshot
+
+1. Keep app running in browser.
+2. Ask 2-3 queries (example: symptoms of diabetes, drug interaction aspirin ibuprofen).
+3. Capture a screenshot showing both query and response.
+4. Save it as `docs/screenshots/demo.png` in the repository root.
+5. Add this snippet in `README.md` under Demo section:
+
+```markdown
+![Medical AI Assistant Demo](docs/screenshots/demo.png)
 ```
 
-Health check:
+For Week-6 demo, include Swagger UI (`/docs`) screenshot as well.
 
-- `GET http://127.0.0.1:8000/health`
+## 11. Troubleshooting
+
+- If `faiss` install fails on Windows, re-run `pip install faiss-cpu==1.13.2` after upgrading pip.
+- If model download is slow, wait for first run to cache `sentence-transformers` models.
+- If import errors occur, ensure command is run from inside `RAG/`.
+- If API import fails, verify `RAG/backend/api.py` exists and run uvicorn from `RAG/`.
+
+## 12. Suggested Team Workflow
+
+1. Pull latest code.
+2. Activate `.venv`.
+3. Run `python test_agent.py` before pushing.
+4. Keep gitignored datasets/vector DB unchanged unless a dedicated data update task is assigned.
+
+## 13. Current RAG Structure
+
+Key Week-6 folders:
+
+- `RAG/agent/`
+- `RAG/retrieval/`
+- `RAG/tools/`
+- `RAG/interface/`
+- `RAG/backend/`
+- `RAG/tests/`
