@@ -1,24 +1,50 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Nav } from "@/components/sentinel/Nav";
+import { Hero } from "@/components/sentinel/Hero";
+import { ProblemSolution } from "@/components/sentinel/ProblemSolution";
+import { ScoreGauge } from "@/components/sentinel/ScoreGauge";
+import { Classification } from "@/components/sentinel/Classification";
+import { Features } from "@/components/sentinel/Features";
+import { Architecture } from "@/components/sentinel/Architecture";
+import { TechStack } from "@/components/sentinel/TechStack";
+import { Roadmap } from "@/components/sentinel/Roadmap";
+import { Team } from "@/components/sentinel/Team";
+import { Footer } from "@/components/sentinel/Footer";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+const TITLE = "IPsec Sentinel — AI IPsec VPN Protocol Analyzer";
+const DESC =
+  "AI-powered IPsec VPN protocol analyzer and security assessment framework: deterministic IKE parsing, zero-decryption ESP classification and explainable posture scoring. SIH 2026, PS 26160.";
+
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: TITLE },
+      { name: "description", content: DESC },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESC },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div id="top" className="min-h-screen bg-background">
+      <Nav />
+      <main>
+        <Hero />
+        <ProblemSolution />
+        <ScoreGauge />
+        <Classification />
+        <Features />
+        <Architecture />
+        <TechStack />
+        <Roadmap />
+        <Team />
+      </main>
+      <Footer />
     </div>
   );
 }
